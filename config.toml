@@ -1,1 +1,3 @@
-enableXsrfProtection=false
+[server]
+headless = true
+port = 8501
