@@ -45,17 +45,22 @@ def process_expense_file(file_path):
     expenses_df = pd.read_excel(file_path)
     expenses_df.columns = ['operation', 'amount', 'currency', 'date', 'points', 'description']
     expenses_df = expenses_df.drop(expenses_df.index[0])
-    expenses_df = expenses_df.drop('bonus', axis=1)
+    expenses_df = expenses_df.drop('points', axis=1)
     expenses_df['category'] = expenses_df['operation'].apply(categorize_expense_tr)
     return expenses_df
 
 def plot_expense_categories(expenses_df):
+     # Calculate category percentages
     category_percentages = expenses_df['category'].value_counts(normalize=True) * 100
     colors = [color_map[category] for category in category_percentages.index]
-    plt.figure(figsize=(10, 6))
-    plt.pie(category_percentages, labels=category_percentages.index, autopct='%1.1f%%', colors=colors)
-    plt.title('Expense Categories')
-    st.pyplot()
+    
+    # Create a Matplotlib figure and axis
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.pie(category_percentages, labels=category_percentages.index, autopct='%1.1f%%', colors=colors)
+    ax.set_title('Expense Categories')
+    
+    # Display the plot using st.pyplot()
+    st.pyplot(fig)
 
 def main():
     st.title('Expense Categorization App')
@@ -78,7 +83,7 @@ def main():
     # Allow user to upload their expense file
     st.markdown("### Step 2: Upload your filled expense spreadsheet")
     uploaded_file = st.file_uploader("Choose a file", type="xlsx")
-
+    print(uploaded_file)
     if uploaded_file is not None:
         # Process uploaded file
         st.write("### Uploaded File Details:")
