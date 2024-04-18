@@ -65,8 +65,25 @@ def plot_expense_categories(expenses_df):
 def main():
     st.title('Expense Categorization App')
 
+    st.markdown("## VIEW RESULTS OF SAMPLE DATA")
+    st.write("Click below to see results with sample data")
+
+    if st.button("Show Sample Data Results"):
+        sample_data_path = "expense_template_filled.xlsx"
+        sample_expenses_df = process_expense_file(sample_data_path)
+
+        st.subheader("Sample Data")
+        st.write(sample_expenses_df)
+
+        st.subheader("Sample Expense Categories")
+        plot_expense_categories(sample_expenses_df)
+
+    # Add horizontal separator
+    st.markdown("<hr>", unsafe_allow_html=True)
+
     # Provide Excel template for user to download
-    st.markdown("### Step 1: Upload your expense data")
+    st.markdown("## TRY WITH YOUR DATA")
+    st.markdown("### Step 1: Create your expense data in the template")
     st.write("Download the Excel template to enter your expense data:")
     excel_template_path = "expense_template.xlsx"    
     # Display a download button for the Excel template
@@ -75,15 +92,13 @@ def main():
 
     # Create a download link for the Excel template
     b64 = base64.b64encode(excel_template_bytes).decode()
-
-    b64 = base64.b64encode(excel_template_bytes).decode()
     href = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}" download="excel_template.xlsx">Download Excel Template</a>'
     st.markdown(href, unsafe_allow_html=True)
 
     # Allow user to upload their expense file
     st.markdown("### Step 2: Upload your filled expense spreadsheet")
     uploaded_file = st.file_uploader("Choose a file", type="xlsx")
-    print(uploaded_file)
+ 
     if uploaded_file is not None:
         # Process uploaded file
         st.write("### Uploaded File Details:")
@@ -97,6 +112,9 @@ def main():
         # Plot expense categories
         st.subheader("Expense Categories")
         plot_expense_categories(expenses_df)
+
+
+    
 
 if __name__ == "__main__":
     main()
