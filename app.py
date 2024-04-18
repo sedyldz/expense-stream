@@ -64,6 +64,7 @@ def plot_expense_categories(expenses_df):
 
 def main():
     st.title('Expense Categorization App')
+    st.write("This app helps you to see which categories your expenses fall under by uploading an Excel file with transaction data. 🕵️")
 
     st.markdown("## VIEW RESULTS OF SAMPLE DATA")
     st.write("Click below to see results with sample data")
